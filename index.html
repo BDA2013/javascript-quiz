@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta id="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <link rel="stylesheet" href="./assets/css/style.css" />
     <title>JavaScript Quiz</title>
@@ -12,14 +12,14 @@
     <p>Time: <span id="time">0</span></p>
     <div>
         <h1><span id="screen-header">Coding Quiz Challenge</span></h1>
-        <p>Try to answer the following code-related questions within the time limit.
+        <p id="instruction">Try to answer the following code-related questions within the time limit.
             Keep in mind that incorrect answers will penalize your score/time by ten seconds!</p>
-        <div id="answer-area">
-            <input type="button" name="choices"><br>
-            <input type="button" name="choices"><br>
-            <input type="button" name="choices"><br>
-            <input type="button" name="choices"><br>
-        </div>
+        <section id="choice-area">
+          <button class="choiceButton" id="choiceA"></button>
+          <button class="choiceButton" id="choiceB"></button>
+          <button class="choiceButton" id="choiceC"></button>
+          <button class="choiceButton" id="choiceD"></button>
+        </section>
         <button id="start">Start</button>
     </div>
     <script src="./assets/js/script.js"></script>
