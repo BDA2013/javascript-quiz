@@ -1,11 +1,14 @@
 var time = document.getElementById('time');
 var startButton = document.getElementById('start');
-var questionHead = document.getElementById('screenHeader');
+var screenHead = document.getElementById('screenHeader');
+var info = document.getElementById('instruction'); 
+var choiceArea = document.getElementById('choiceArea');
 var choiceButton = document.getElementsByClassName('choiceButton');
 var choiceA = document.getElementById('choiceA');
 var choiceB = document.getElementById('choiceB');
 var choiceC = document.getElementById('choiceC');
 var choiceD = document.getElementById('choiceD');
+
 
 var i = 0;
 var score = 0;
@@ -69,31 +72,6 @@ var questions =
             answer: 2
         }
       ];
-/*
-function generateQuiz() {
-
-	function showQuestions(){
-		// code will go here
-        for(var i = 0; i < questions.length; i++) {
-            questionHead.textContent = questions[i].question;
-        }
-	}
-
-	function showResults(){
-		// code will go here
-	}
-
-	// show the questions
-	showQuestions();
-
-	// when user clicks submit, next question
-	submitButton.onclick = function(){
-		showResults();
-	}
-}
-*/
-
-var userChoices = document.getElementsByTagName('answer-area');
       
 
 /*
@@ -107,25 +85,34 @@ function currentScores() {
 }
 */
 
-function quiz() {
-
-    
-    //choiceArea.style.visibility = hidden;
+function quiz() {    
+    choiceArea.setAttribute('style', 'visibility: visible');
+    startButton.setAttribute('style', 'visibility: hidden');
+    info.setAttribute('style', 'visibility: hidden');
     var question = questions[i].question;
     var choices = questions[i].choices;
 
-    questionHead.textContent = question;
-    choiceA.textContent = choices[0];
-    choiceB.textContent = choices[1];
-    choiceC.textContent = choices[2];
-    choiceD.textContent = choices[3];
+    screenHead.textContent = question;
+    userChoice(choices[0], choices[1], choices[2], choices[3])
+}
 
+function userChoice(answerA, answerB, answerC, answerD) {
+    choiceA.textContent = answerA;
+    choiceB.textContent = answerB;
+    choiceC.textContent = answerC;
+    choiceD.textContent = answerD;
+
+    var choices = questions[i].choices;
     var storedAnswer = questions[i].answer;
     var queryAnswer = choices[storedAnswer];
     console.log(queryAnswer);
-    
+    console.log(answerA === queryAnswer);
+    console.log(answerB === queryAnswer);
+    console.log(answerC === queryAnswer);
+    console.log(answerD === queryAnswer);
+
     choiceA.addEventListener("click", function() {
-        if(this.textContent == queryAnswer){
+        if (this === queryAnswer) {
             score++;
             quizCounter();
         } else {
@@ -135,31 +122,37 @@ function quiz() {
     });
 
     choiceB.addEventListener("click", function() {
-        if(this.textContent == queryAnswer){
+        if(this === queryAnswer){
             score++;
+            i++;
             quizCounter();
         } else {
             timeLeft -= 10;
+            i++;
             quizCounter();
         }
     });
 
     choiceC.addEventListener("click", function() {
-        if(this.textContent == queryAnswer){
+        if(this === queryAnswer){
             score++;
+            i++;
             quizCounter();
         } else {
             timeLeft -= 10;
+            i++;
             quizCounter();
         }
     });
 
     choiceD.addEventListener("click", function() {
-        if(this.textContent == queryAnswer){
+        if(this === queryAnswer){
             score++;
+            i++;
             quizCounter();
         } else {
             timeLeft -= 10;
+            i++;
             quizCounter();
         }
     });
@@ -167,8 +160,22 @@ function quiz() {
 
 function quizCounter() {
     if (i < questions.length) {
-        quiz(i++);
+        quiz();
+    } else {
+       results(); 
     }   
+}
+
+function results() {
+    i = 0;
+    timeLeft = 60;
+    choiceArea.setAttribute('style', 'visibility: hidden');
+    startButton.setAttribute('style', 'visibility: visible');
+    info.setAttribute('style', 'visibility: visible');
+    startButton.textContent = "Try Again"
+    screenHead.textContent = "Congratuations!";
+    info.textContent = "Your score is: " + score;
+
 }
 
 function quizTimer() {
