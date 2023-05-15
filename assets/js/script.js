@@ -9,11 +9,17 @@ var choiceB = document.getElementById('choiceB');
 var choiceC = document.getElementById('choiceC');
 var choiceD = document.getElementById('choiceD');
 
+var initialsForm = document.getElementById("initials");
+var initial = document.getElementById("initial").innerHTML;
+var submitButton = document.getElementById('submitButton');
+var scoreButton = document.getElementById('showScore');
+
+var table = document.getElementById("scoreData");
+
 
 var i = 0;
 var score = 0;
 var timeLeft = 60;
-
 time.textContent = timeLeft;
 
 var questions = 
@@ -74,20 +80,33 @@ var questions =
       ];
       
 
-/*
-function currentScores() {
-    localStorage.setItem("wins", JSON.stringify(wins));
-    localStorage.setItem("loses", JSON.stringify(loses));
 
-    gameWins.textContent = localStorage.getItem("wins");
-    gameLoses.textContent = localStorage.getItem("loses");
+function currentScores() {
+
+    //gameWins.textContent = localStorage.getItem("wins");
+    //gameLoses.textContent = localStorage.getItem("loses");
 
 }
-*/
+
+
+function quizTimer() {
+    var timeInterval = setInterval(function () {
+        timeLeft--;
+        time.textContent = timeLeft 
+
+        if (timeLeft === 0) {
+            clearInterval(timeInterval);
+            results();
+        }
+      }, 1000);
+}
 
 function quiz() {    
+    
     choiceArea.setAttribute('style', 'visibility: visible');
     startButton.setAttribute('style', 'visibility: hidden');
+    initialsForm.setAttribute('style', 'visibility: hidden');
+    scoreButton.setAttribute('style', 'visibility: hidden');
     info.setAttribute('style', 'visibility: hidden');
     var question = questions[i].question;
     var choices = questions[i].choices;
@@ -114,9 +133,12 @@ function userChoice(answerA, answerB, answerC, answerD) {
     choiceA.addEventListener("click", function() {
         if (this === queryAnswer) {
             score++;
+            console.log(score)
+            i++;
             quizCounter();
         } else {
             timeLeft -= 10;
+            i++
             quizCounter();
         }
     });
@@ -124,9 +146,10 @@ function userChoice(answerA, answerB, answerC, answerD) {
     choiceB.addEventListener("click", function() {
         if(this === queryAnswer){
             score++;
+            console.log(score);
             i++;
             quizCounter();
-        } else {
+        } else if (this !== queryAnswer) {
             timeLeft -= 10;
             i++;
             quizCounter();
@@ -136,10 +159,12 @@ function userChoice(answerA, answerB, answerC, answerD) {
     choiceC.addEventListener("click", function() {
         if(this === queryAnswer){
             score++;
+            console.log(this === queryAnswer);
             i++;
             quizCounter();
-        } else {
+        } else if (this !== queryAnswer) {
             timeLeft -= 10;
+            console.log(this === queryAnswer);
             i++;
             quizCounter();
         }
@@ -148,9 +173,10 @@ function userChoice(answerA, answerB, answerC, answerD) {
     choiceD.addEventListener("click", function() {
         if(this === queryAnswer){
             score++;
+            console.log(score);
             i++;
             quizCounter();
-        } else {
+        } else if (this !== queryAnswer) {
             timeLeft -= 10;
             i++;
             quizCounter();
@@ -160,9 +186,10 @@ function userChoice(answerA, answerB, answerC, answerD) {
 
 function quizCounter() {
     if (i < questions.length) {
+        console.log(i);
         quiz();
     } else {
-       results(); 
+       results();
     }   
 }
 
@@ -172,10 +199,34 @@ function results() {
     choiceArea.setAttribute('style', 'visibility: hidden');
     startButton.setAttribute('style', 'visibility: visible');
     info.setAttribute('style', 'visibility: visible');
-    startButton.textContent = "Try Again"
     screenHead.textContent = "Congratuations!";
     info.textContent = "Your score is: " + score;
+    initialsForm.setAttribute('style', 'visibility: visible');
 
+    submitButton.addEventListener("click", function(event) {
+        event.preventDefault()
+        storeScore()
+        
+    });
+    startButton.textContent = "Try Again";
+
+}
+
+function storeScore() {
+    localStorage.setItem("initials", initial);
+    localStorage.setItem("score", JSON.stringify(score));
+
+    var row = table.insertRow(1);
+    var cell1 = row.insertCell(0);
+    var cell2 = row.insertCell(1);
+
+    cell1.innerHTML = localStorage.getItem("initials")
+    cell2.innerHTML = localStorage.getItem("score")
+
+}
+
+function showScores() {
+    table.setAttribute('style', 'visibility: visable')
 }
 
 function quizTimer() {
@@ -186,15 +237,24 @@ function quizTimer() {
     
             if (timeLeft < 0) {
                 timeLeft = 0;
+                time.textContent = timeLeft;
+                results();
+                clearInterval(timeInterval);
             }
             if (timeLeft === 0) {
+                results();
                 clearInterval(timeInterval);
             }
           }, 1000);
     }  
 }
 
+scoreButton.addEventListener("click", function() {
+    showScores()
+});
+
 startButton.addEventListener("click", function() {
-    quiz();
+    timeLeft = 60
+    quizCounter();
     quizTimer();
 });

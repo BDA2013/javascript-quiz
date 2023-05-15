@@ -20,7 +20,22 @@
           <button class="choiceButton" id="choiceC"></button>
           <button class="choiceButton" id="choiceD"></button>
         </section>
+        <form  id="initials">
+          <label for="initial">Your Initials:</label>
+          <input type="text" id="initial" name="initial">
+          <input type="submit" id="submitButton" value="Submit">
+        </form>
         <button id="start">Start</button>
+        <button id="showScore">Show Scores</button>
+
+        <section class="currentScores">
+          <table id="scoreData">
+            <tr>
+              <th>Initial</th>
+              <th>Score</th>
+            </tr>
+          </table>
+        </section>
     </div>
     <script src="./assets/js/script.js"></script>
   </body>
