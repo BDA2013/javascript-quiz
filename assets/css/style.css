@@ -1,0 +1,10 @@
+.currentScores {
+     visibility: hidden;
+}
+#initials {
+     visibility: hidden;
+}
+
+#choiceArea {
+     visibility: hidden;
+}
